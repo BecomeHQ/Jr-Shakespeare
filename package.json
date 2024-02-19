@@ -1,0 +1,21 @@
+{
+  "name": "webflow-dev-starter-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "serve",
+    "build": "node build.mjs"
+  },
+  "author": "Qamar Aziz",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.20.0",
+    "serve": "^14.2.1"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "gsap-trial": "^3.12.5"
+  }
+}
