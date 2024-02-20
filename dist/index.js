@@ -6669,7 +6669,6 @@
       );
       console.log(heroTl.totalDuration());
     };
-    heroInteraction();
     let typeSplitLinks = new SplitType(".link_text", {
       types: "words, chars",
       tagName: "span"
@@ -6679,27 +6678,7 @@
       let listTwo = $(this).find("[link_text_is-2] .char");
       let line = $(this).find("[line]");
       let linkHoverTl = gsapWithCSS.timeline({ paused: true });
-      linkHoverTl.to(listOne, {
-        translateY: "-0.1em",
-        rotationY: "-5.7deg",
-        rotationX: "-90deg",
-        stagger: { each: 0.08 },
-        ease: "power3.inOut",
-        duration: 0.7
-      });
-      linkHoverTl.from(
-        listTwo,
-        {
-          translateY: "0.1em",
-          rotationY: "5.7deg",
-          rotationX: "90deg",
-          stagger: { each: 0.08 },
-          ease: "power3.inOut",
-          duration: 0.7
-        },
-        0.1
-      );
-      linkHoverTl.to(line, { width: 0, duration: 0.7 }, 0);
+      linkHoverTl.to(line, { width: 0, duration: 0.7 });
       $(this).on("mouseenter", function() {
         linkHoverTl.restart();
       });
@@ -6733,7 +6712,6 @@
         0
       );
     };
-    bookSequenceInteraction();
     const books = document.querySelectorAll(".book-item-wrapper");
     let bookTl = gsapWithCSS.timeline({ paused: true });
     books.forEach((book) => {
@@ -6755,8 +6733,10 @@
     const secondFoldInteraction = () => {
       const secondFoldTl = gsapWithCSS.timeline({
         scrollTrigger: {
-          trigger: ".title-3-lines",
-          start: "top 75%"
+          trigger: ".book-scroll-sticky-wrap",
+          start: "top 75%",
+          end: "bottom 150%",
+          scrub: true
         }
       });
       secondFoldTl.from(".title-3-lines .word", {
@@ -6795,7 +6775,6 @@
         "-=1"
       );
     };
-    secondFoldInteraction();
     const randomContentInteraction = () => {
       gsapWithCSS.from(
         ".random_image_item.is-1, .random_image-middle-2.is-10, .random_image_item.is-6",
@@ -6812,7 +6791,7 @@
       );
       const randomContentTl = gsapWithCSS.timeline({
         scrollTrigger: {
-          trigger: ".random_image_wrapper",
+          trigger: ".random_content_wrapper",
           start: "top 50%"
         }
       });
@@ -6850,7 +6829,7 @@
         duration: 1,
         scrollTrigger: {
           trigger: ".random_image_wrapper",
-          start: "top -10%",
+          start: "top -70%",
           scrub: true,
           onLeaveBack: () => {
             gsapWithCSS.to(".random_mid_sticker", { opacity: 1 });
@@ -6858,7 +6837,6 @@
         }
       });
     };
-    randomContentInteraction();
     const bookRandomInteraction = () => {
       const randomImage = [];
       for (let i = 1; i <= 9; i++) {
@@ -6871,42 +6849,45 @@
       const bookRandomTl = gsapWithCSS.timeline({
         scrollTrigger: {
           trigger: ".random_image_wrapper",
-          start: "top -10%",
+          start: "top -120%",
           end: "bottom bottom",
           scrub: true
         }
       });
-      bookRandomTl.to(randomImage, {
-        x: "0vw",
-        y: "0vh",
-        scale: 1,
-        rotation: "0deg",
-        duration: 3,
-        opacity: 1
-      });
+      bookRandomTl.to(randomImage, { opacity: 1, duration: 0.1 }).to(
+        randomImage,
+        {
+          x: "0vw",
+          y: "0vh",
+          scale: 1,
+          rotation: "0deg",
+          duration: 3
+          // opacity: 1,
+        },
+        "<"
+      ).from(".random_cta_wrapper", { opacity: 0 });
     };
-    bookRandomInteraction();
     const bookOpenInteraction = () => {
       const bookWrapper = document.querySelector(".book-wrapper");
       const bookOpenTl = gsapWithCSS.timeline({
         defaults: { ease: "linear" },
         scrollTrigger: {
           trigger: ".section_books",
-          start: "top top",
+          start: "top -80%",
           end: "bottom bottom",
           scrub: true
         }
       });
-      bookOpenTl.to(bookWrapper, { opacity: 1 }).to(bookWrapper, {
-        x: "10rem",
+      bookOpenTl.to(bookWrapper, { opacity: 1, duration: 0.01 }).from(bookWrapper, { y: "-15rem" }).to(bookWrapper, {
+        // x: '10rem',
         y: "5rem",
-        scale: 1.2,
-        rotation: "4deg"
+        scale: 1.2
+        // rotation: '4deg',
       }).to(bookWrapper, {
-        x: "-30rem",
-        y: "15rem",
+        // x: '-30rem',
+        y: "15rem"
         // scale: 1.2,
-        rotation: "-4deg"
+        // rotation: '-4deg',
       }).set(".page-1", {
         backfaceVisibility: "hidden",
         transformStyle: "preserve-3d"
@@ -6932,7 +6913,24 @@
         "<"
       );
     };
-    bookOpenInteraction();
+    heroInteraction();
+    if (window.innerWidth > 991) {
+      bookSequenceInteraction();
+      secondFoldInteraction();
+      randomContentInteraction();
+      bookRandomInteraction();
+      bookOpenInteraction();
+    }
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 991) {
+        heroInteraction();
+        bookSequenceInteraction();
+        secondFoldInteraction();
+        randomContentInteraction();
+        bookRandomInteraction();
+        bookOpenInteraction();
+      }
+    });
   });
 })();
 /*! Bundled license information:
