@@ -3,7 +3,7 @@ import * as esbuild from 'esbuild'
 let ctx = await esbuild.context({
   entryPoints: ['src/index.js'],
   bundle: true,
-  minify: false,
+  minify: true,
   outfile: 'dist/index.js',
 })
 

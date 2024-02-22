@@ -1,4 +1,4 @@
-console.log('Jumbaya Home Page')
+// console.log('Jumbaya Home Page')
 
 import { gsap } from 'gsap'
 
@@ -7,6 +7,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 window.addEventListener('DOMContentLoaded', (event) => {
+  //Avoid Flash
+  gsap.set('.page-wrapper', {
+    opacity: 1,
+  })
+
   // text splitting code
   let typeSplit
 
@@ -84,7 +89,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         '<'
       )
 
-    console.log(heroTl.totalDuration())
+    // console.log(heroTl.totalDuration())
   }
 
   // Run heroInteraction()
@@ -194,9 +199,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
       let bookItem = book.querySelector('.book-item')
       // let bookCover = book.querySelector('.book-cover')
-
+      let rotateY
+      if (window.innerWidth < 991) {
+        rotateY = 20
+      } else {
+        rotateY = 50
+      }
       bookTl.from(bookItem, {
-        rotationY: 50,
+        rotationY: rotateY,
       })
       // .from(bookCover, {
       //   opacity: 0.2,
@@ -367,7 +377,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
 
     bookRandomTl
-      .to(randomImage, { opacity: 1, duration: 0.1 })
+      .to(randomImage, { opacity: 1, duration: 0.5 })
       .to(
         randomImage,
         {
@@ -391,16 +401,65 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   /**
+   * Mobile Random Book Ix Start
+   */
+
+  const mobileBookRandomIx = () => {
+    // Add images to array
+    const randomImage = []
+    for (let i = 1; i <= 9; i++) {
+      randomImage.push(`.random_image_item.is-${i}`)
+    }
+    randomImage.push(`.random_image-middle-2.is-10`)
+    for (let i = 11; i <= 24; i++) {
+      randomImage.push(`.random_image_item.is-${i}`)
+    }
+
+    const mobileBookRandomTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.random_image_grid',
+        start: 'top 60%',
+      },
+    })
+
+    mobileBookRandomTl
+      .from(randomImage, {
+        opacity: 0,
+        scale: 0.7,
+        ease: 'back.out(1.7)',
+        stagger: {
+          from: 'random',
+          amount: 1.2,
+        },
+      })
+      .from('.random_cta_wrapper', { opacity: 0 }, '<20%')
+  }
+
+  if (window.innerWidth < 481) {
+    mobileBookRandomIx()
+  }
+
+  /**
+   * Mobile Random Book Ix End
+   */
+
+  /**
    * Book Open Start
    */
 
   const bookOpenInteraction = () => {
+    let scaleChange = 3.3
+    let marginChange = '30rem'
+    if (window.innerWidth < 991) {
+      scaleChange = 2
+      marginChange = '22rem'
+    }
     const bookWrapper = document.querySelector('.book-wrapper')
     const bookOpenTl = gsap.timeline({
       defaults: { ease: 'linear' },
       scrollTrigger: {
         trigger: '.section_books',
-        start: 'top -80%',
+        start: 'top -200%',
         end: 'bottom bottom',
         scrub: true,
       },
@@ -409,16 +468,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
       .to(bookWrapper, { opacity: 1, duration: 0.01 })
       .from(bookWrapper, { y: '-15rem' })
       .to(bookWrapper, {
-        // x: '10rem',
         y: '5rem',
         scale: 1.2,
-        // rotation: '4deg',
       })
       .to(bookWrapper, {
-        // x: '-30rem',
         y: '15rem',
-        // scale: 1.2,
-        // rotation: '-4deg',
       })
       .set('.page-1', {
         backfaceVisibility: 'hidden',
@@ -432,10 +486,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
       .to(bookWrapper, {
         x: '-10rem',
         rotation: '0deg',
-        scale: 3.3,
+        scale: scaleChange,
       })
       .to(bookWrapper, {
-        marginBottom: '30rem',
+        marginBottom: marginChange,
       })
       .to('.book-wrapper-text', {
         opacity: 1,
@@ -467,7 +521,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   heroInteraction()
-  if (window.innerWidth > 991) {
+  if (window.innerWidth > 500) {
     // myFunction();
 
     bookSequenceInteraction()
