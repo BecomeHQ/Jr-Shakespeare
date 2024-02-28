@@ -48,46 +48,49 @@ window.addEventListener('DOMContentLoaded', (event) => {
     heroTl
       .from('.navbar_component', { y: '-100%', duration: 1 })
       .from('.section_home-hero', { opacity: 0, duration: 0.5 }, '-=0.8')
-      .from('.hero_title .char', {
-        // y: '-20px',
+      .from('.hero_title .line', {
+        y: '20px',
         opacity: 0,
         duration: 1,
-        stagger: { amount: 1.2 },
+        stagger: { amount: 0.2, position: 'start' },
         ease: 'power1.out',
       })
-      .from('.hero_content', { y: '-20px', opacity: 0, duration: 0.5 }, '-=0.5')
-      .from('.hero_content_line path', { strokeDashoffset: 170, duration: 0.5 })
-      .from(
-        '.up-arrow',
-        {
-          y: 10,
-          opacity: 0,
-          ease: 'elastic.out(1,0.3)',
-          duration: 0.2,
-        },
-        '-=0.5'
-      )
-      .from(
-        '.pop-content',
-        {
-          y: 10,
-          scale: 0,
-          opacity: 0,
-          ease: 'elastic.out(2,0.3)',
-          duration: 2,
-        },
-        '<0.1'
-      )
+      .from('.hero_content', { y: '20px', opacity: 0, duration: 1.2 }, '-=0.5')
+      // .from('.hero_content_line path', { strokeDashoffset: 170, duration: 1 })
       .from(
         '[hero-price-item]',
         {
-          y: '20rem',
-          stagger: 0.2,
-          ease: 'back.out(1.7)',
-          duration: 0.7,
+          y: '30px',
+          opacity: 0,
+          stagger: { amount: 0.2 },
+          ease: 'power1.out',
+          duration: 1,
         },
-        '<'
+        '=-1'
       )
+    // .from(
+    //   '.up-arrow',
+    //   {
+    //     y: 10,
+    //     opacity: 0,
+    //     ease: 'elastic.out(1,0.3)',
+    //     duration: 0.2,
+    //     delay: 1,
+    //   },
+    //   '-=0.5'
+    // )
+    // .from(
+    //   '.pop-content',
+    //   {
+    //     y: 10,
+    //     scale: 0,
+    //     opacity: 0,
+    //     ease: 'power2.out',
+    //     duration: 0.25,
+    //     // delay: 1,
+    //   },
+    //   '<0.1'
+    // )
 
     // console.log(heroTl.totalDuration())
   }
@@ -145,7 +148,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       .from('.book_sequence_col-1 .book-item-wrapper', {
         opacity: 0,
         y: -50,
-        stagger: { amount: 1.5 },
+        stagger: { amount: 0.75 },
         duration: 0.5,
         reversed: true,
         ease: 'back.out(1.7)',
@@ -155,7 +158,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         {
           opacity: 0,
           y: -50,
-          stagger: { amount: 1.5 },
+          stagger: { amount: 0.75 },
           duration: 0.5,
           ease: 'back.out(1.7)',
         },
