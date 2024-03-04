@@ -1,6 +1,6 @@
 // console.log('Jumbaya Home Page')
 
-import { gsap } from 'gsap'
+import { gsap, random } from 'gsap'
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -231,49 +231,47 @@ window.addEventListener('DOMContentLoaded', (event) => {
         trigger: '.book-scroll-sticky-wrap',
         start: 'top 75%',
         end: 'bottom 150%',
-        scrub: true,
+        // scrub: true,
       },
     })
 
     secondFoldTl
-      .from('.title-3-lines .word', {
-        translateY: '0.1em',
-        rotationY: '5.7deg',
-        rotationX: '90deg',
+      .from('.title-3-lines .line', {
+        // translateY: '0.1em',
+        // rotationY: '5.7deg',
+        // rotationX: '90deg',
+        y: 20,
+        opacity: 0,
         stagger: { amount: 1 },
-        ease: 'power3.inOut',
+        ease: 'power1.out',
         duration: 0.7,
       })
-      .from('.down-arrow path', {
-        strokeDashoffset: '3170px',
-        duration: 3,
-        ease: 'linear',
+      // .from('.down-arrow path', {
+      //   strokeDashoffset: '3170px',
+      //   duration: 3,
+      //   ease: 'linear',
+      // })
+      // .from(
+      //   '.text-sticker .char',
+      //   {
+      //     opacity: 0,
+      //     stagger: { amount: 1 },
+      //   },
+      //   '-=2'
+      // )
+      .from('.sticker-2', {
+        scale: 0,
+        ease: 'elastic.out(1,0.5)',
+        duration: 1.2,
       })
-      .from(
-        '.text-sticker .char',
-        {
-          opacity: 0,
-          stagger: { amount: 1 },
-        },
-        '-=2'
-      )
-      .from(
-        '.sticker',
-        {
-          scale: 0,
-          ease: 'elastic.out(1,0.5)',
-          duration: 1.2,
-        },
-        '<30%'
-      )
       .from(
         '.card-item',
         {
           scale: 0.6,
           opacity: 0,
-          stagger: 0.2,
+          stagger: { amount: 0.3 },
         },
-        '-=1'
+        '<'
       )
   }
 
@@ -451,62 +449,55 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   const bookOpenInteraction = () => {
-    let scaleChange = 3.3
-    let marginChange = '30rem'
-    if (window.innerWidth < 991) {
-      scaleChange = 2
-      marginChange = '22rem'
+    let widthChange = 900
+    let heightChange = 506.25
+    if (window.innerWidth < 480) {
+      widthChange = 540
+      heightChange = 303.75
     }
     const bookWrapper = document.querySelector('.book-wrapper')
     const bookOpenTl = gsap.timeline({
-      defaults: { ease: 'linear' },
+      defaults: { ease: 'linear', duration: 3 },
       scrollTrigger: {
-        trigger: '.section_books',
-        start: 'top -200%',
+        trigger: '.section_open-book',
+        start: 'top top',
         end: 'bottom bottom',
         scrub: true,
       },
     })
     bookOpenTl
-      .to(bookWrapper, { opacity: 1, duration: 0.01 })
-      .from(bookWrapper, { y: '-15rem' })
-      .to(bookWrapper, {
-        y: '5rem',
-        scale: 1.2,
-      })
-      .to(bookWrapper, {
-        y: '15rem',
-      })
-      .set('.page-1', {
+      .set('.page-1, .page-2', {
         backfaceVisibility: 'hidden',
         transformStyle: 'preserve-3d',
       })
-      .to('.page-1', {
+      .to(bookWrapper, {
+        width: widthChange,
+        height: heightChange,
+        duration: 5,
+      })
+      // .to(bookWrapper, { x: '0.1rem' })
+      .to(
+        '.page-1',
+        {
+          force3D: true,
+          rotationY: '-180deg',
+          transformStyle: 'preserve-3d',
+          duration: 5,
+        },
+        '<'
+      )
+      .to('.page-2', {
+        force3D: true,
+        rotationY: '-90deg',
+        transformStyle: 'preserve-3d',
+      })
+      .to('.page-1', { zIndex: 1, duration: 0 })
+      .to('.page-2', {
         force3D: true,
         rotationY: '-180deg',
         transformStyle: 'preserve-3d',
       })
-      .to(bookWrapper, {
-        x: '-10rem',
-        rotation: '0deg',
-        scale: scaleChange,
-      })
-      .to(bookWrapper, {
-        marginBottom: marginChange,
-      })
-      .to('.book-wrapper-text', {
-        opacity: 1,
-      })
-      .to('.book-page-image.is-text', {
-        opacity: 0,
-      })
-      .to(
-        '.text-color-change',
-        {
-          color: '#793671',
-        },
-        '<'
-      )
+      .from('.word-less_content', { opacity: 0 }, '<-90%')
   }
 
   // bookOpenInteraction()
@@ -516,14 +507,85 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   /**
-   * Tab Interaction Start
+   * Week Interaction Start
    */
 
+  const weekInteraction = () => {
+    let moveCards = 170
+    switch (true) {
+      case window.innerWidth > 1200:
+        moveCards = 110
+        break
+
+      case window.innerWidth > 768 && window.innerWidth < 991:
+        moveCards = 230
+        break
+
+      case window.innerWidth > 468 && window.innerWidth < 768:
+        moveCards = 200
+        break
+
+      case window.innerWidth > 320 && window.innerWidth < 468:
+        moveCards = 500
+        break
+
+      default:
+        // Default action if none of the cases match
+        break
+    }
+    const weekTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.week_scroll-long',
+        start: 'top 0',
+        end: 'bottom bottom',
+        scrub: true,
+      },
+    })
+
+    weekTl.to('.week_card-list', {
+      xPercent: -moveCards,
+      duration: 1,
+      ease: 'linear',
+    })
+  }
+
+  weekInteraction()
+
+  // Week Card Hover
+  const weekCards = document.querySelectorAll('.week_card')
+
+  weekCards.forEach((weekCard) => {
+    const weekCardTitle = weekCard.querySelector('.text-size-medium')
+
+    const weekCard1 = weekCard.querySelector('.week-book.is-1')
+    const weekCard2 = weekCard.querySelector('.week-book.is-2')
+    const weekCard3 = weekCard.querySelector('.week-book.is-3')
+    const weekCard4 = weekCard.querySelector('.week-book.is-4')
+    const weekCardTl = gsap.timeline({
+      defaults: { ease: 'power1.out', duration: 0.5 },
+      paused: true,
+    })
+
+    weekCardTl
+      .to(weekCard1, { y: -20 }, 0)
+      .to(weekCard2, { y: -40 }, 0)
+      .to(weekCard3, { y: -80 }, 0)
+      .to(weekCard4, { y: -60 }, 0)
+      .to(weekCardTitle, { opacity: 0 }, 0)
+
+    weekCard.addEventListener('mouseenter', () => {
+      weekCardTl.play()
+    })
+    weekCard.addEventListener('mouseleave', () => {
+      weekCardTl.reverse()
+    })
+  })
   /**
-   * Tab Interaction End
+   * Week Interaction End
    */
 
   heroInteraction()
+  bookOpenInteraction()
   if (window.innerWidth > 500) {
     // myFunction();
 
@@ -531,7 +593,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     secondFoldInteraction()
     randomContentInteraction()
     bookRandomInteraction()
-    bookOpenInteraction()
   }
 
   window.addEventListener('resize', () => {
@@ -543,7 +604,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       secondFoldInteraction()
       randomContentInteraction()
       bookRandomInteraction()
-      bookOpenInteraction()
+      // bookOpenInteraction()
     }
   })
 })
