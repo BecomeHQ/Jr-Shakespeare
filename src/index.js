@@ -462,7 +462,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         trigger: '.section_open-book',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: 1,
       },
     })
     bookOpenTl
@@ -507,6 +507,66 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   /**
+   * Book Open for mobile Start
+   */
+
+  const mobileBookOpenInteraction = () => {
+    let widthChange = 320
+    let heightChange = 180
+
+    const bookWrapper = document.querySelector('.book-wrapper')
+    const bookOpenTl = gsap.timeline({
+      defaults: { ease: 'linear', duration: 3 },
+      scrollTrigger: {
+        trigger: '.section_open-book',
+        start: 'top top',
+        end: 'bottom 80%',
+        scrub: 1,
+      },
+    })
+    bookOpenTl
+      .set('.page-1, .page-2', {
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d',
+      })
+      .to(bookWrapper, {
+        width: widthChange,
+        height: heightChange,
+        duration: 5,
+      })
+      .to(bookWrapper, { x: '0.1rem' })
+      .to(
+        '.page-1',
+        {
+          force3D: true,
+          rotationY: '-180deg',
+          transformStyle: 'preserve-3d',
+          duration: 5,
+        },
+        '<'
+      )
+      .to('.page-2', {
+        force3D: true,
+        rotationY: '-90deg',
+        transformStyle: 'preserve-3d',
+      })
+      .to('.page-1', { zIndex: 1, duration: 0 })
+      .to('.page-2', {
+        force3D: true,
+        rotationY: '-180deg',
+        transformStyle: 'preserve-3d',
+      })
+      .from('.word-less_content', { opacity: 0 }, '<-90%')
+  }
+  if (window.innerWidth < 500) {
+    mobileBookOpenInteraction()
+  }
+
+  /**
+   * Book Open for mobile End
+   */
+
+  /**
    * Week Interaction Start
    */
 
@@ -536,9 +596,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const weekTl = gsap.timeline({
       scrollTrigger: {
         trigger: '.week_scroll-long',
-        start: 'top 0',
+        start: 'top -20%',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: 2,
       },
     })
 
@@ -585,7 +645,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
    */
 
   heroInteraction()
-  bookOpenInteraction()
+
   if (window.innerWidth > 500) {
     // myFunction();
 
@@ -593,6 +653,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     secondFoldInteraction()
     randomContentInteraction()
     bookRandomInteraction()
+    bookOpenInteraction()
   }
 
   window.addEventListener('resize', () => {
@@ -604,7 +665,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       secondFoldInteraction()
       randomContentInteraction()
       bookRandomInteraction()
-      // bookOpenInteraction()
+      bookOpenInteraction()
     }
   })
 })
